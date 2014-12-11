@@ -51,7 +51,19 @@ while line:
         flag =0    
         if len(vals) == 24:
             plt.plot(xdates,vals,linestyle='-', color=numpy.random.rand(3,1),label=st_dt)
+            max1 =0.0
+            pt1 =0
+            print(vals)
+            for x in range(0,24):
+               prev = max1    
+               max1 = max(max1,float(vals[x]))
+               if prev != max1:
+                   pt1 =  x
+              
+            plt.plot([pt1],[max1],'ro') 
+            
         vals =[]
+        
         
     line = f.readline()
     
