@@ -3,7 +3,7 @@ import matplotlib
 import datetime
 import random
 import time
-import numpy
+import numpy as np
 
 import sys
 arg = sys.argv[1]
@@ -15,8 +15,8 @@ xdates = []
 
 flag = 0
 plt.xlabel('Time')
-plt.ylabel('Power Consumed')
-plt.title('Graph')
+plt.ylabel('Power Consumed (KW)')
+plt.title(arg+' data analysis')
 plt.legend()
 st_dt = ""
 arg1 =1
@@ -50,17 +50,31 @@ while line:
     elif dt.weekday() != arg1 and flag == 1: #day stopped        
         flag =0    
         if len(vals) == 24:
-            plt.plot(xdates,vals,linestyle='-', color=numpy.random.rand(3,1),label=st_dt)
+            plt.plot(xdates,vals,linestyle='-', color=np.random.rand(3,1),label=st_dt)
             max1 =0.0
             pt1 =0
             print(vals)
+            diff =0
+            pt2 =0
+            pt3 =0
             for x in range(0,24):
+               if x>0 :
+                   prev1 = diff
+                   diff = max(diff, float(vals[x])-float(vals[x-1]))
+                   if prev1 != diff :
+                       pt2 = x-1
+                       pt3 = x
                prev = max1    
                max1 = max(max1,float(vals[x]))
                if prev != max1:
                    pt1 =  x
-              
+                   
+            plt.plot([pt2,pt3],[vals[pt2],vals[pt3]],'bo')
             plt.plot([pt1],[max1],'ro') 
+            plt.annotate(str(int(max1)), 
+                         xy=(pt1, max1),  
+                         xycoords='data',
+                         )
             
         vals =[]
         
@@ -72,5 +86,5 @@ f.close()
 #xdates = [datetime.datetime.strptime(date,"%d-%b-%y %H:%M:%S") for date in dates]
 #plt.plot_date(xdates,vals,linestyle='-', color='r',)
 plt.legend()
-
+plt.xticks(np.arange(min(xdates), max(xdates)+1, 1.0))
 plt.show()
