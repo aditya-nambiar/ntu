@@ -7,7 +7,12 @@ import numpy as np
 
 import sys
 arg = sys.argv[1]
+arg2 = sys.argv[2]
 f = open('../data/April Data.csv', 'r')
+if arg2 == "nov" :
+	f = open('../data/Nov Data.csv', 'r')
+elif arg2 == "oct" :
+	f = open('../data/Oct Data.csv', 'r')
 line = f.readline()
 line = f.readline()
 vals = []
@@ -19,7 +24,7 @@ plt.ylabel('Power Consumed (KW)')
 plt.title(arg+' data analysis')
 plt.legend()
 st_dt = ""
-arg1 =1
+arg1 =-1
 if arg == "mon":
     arg1 = 0
 elif arg == "tue":
@@ -38,7 +43,7 @@ elif arg == "sun":
 xdates = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 while line:
     arr = line.split(',');
-    dt =datetime.datetime.strptime(arr[2],"%d-%b-%y %H:%M:%S")
+    dt =datetime.datetime.strptime(arr[2],"%m/%d/%y %H:%M")
    
     if dt.weekday() == arg1 and flag == 0:
         vals = vals + [arr[8]]
